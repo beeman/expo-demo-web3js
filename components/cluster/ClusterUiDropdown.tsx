@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useThemeColor } from '@/hooks/useThemeColor'
-import { Cluster } from './cluster-data-access'
+import { Cluster } from './ClusterProvider'
 
 export function ClusterUiDropdown({
   clusters,

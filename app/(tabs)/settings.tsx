@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
-import { SettingCluster } from '@/components/settings/setting-cluster'
+import { SettingCluster } from '@/components/settings/SettingCluster'
 
 export default function SettingsScreen() {
   return (
