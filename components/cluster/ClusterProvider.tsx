@@ -1,7 +1,9 @@
 import { clusterApiUrl } from '@solana/web3.js'
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import { IdentifierString } from '@wallet-standard/base'
 
 export interface Cluster {
+  id: IdentifierString
   name: string
   endpoint: string
   network: ClusterNetwork
@@ -17,11 +19,13 @@ export enum ClusterNetwork {
 
 export const defaultClusters: readonly Cluster[] = [
   {
+    id: 'solana:devnet',
     name: 'devnet',
     endpoint: clusterApiUrl('devnet'),
     network: ClusterNetwork.Devnet,
   },
   {
+    id: 'solana:testnet',
     name: 'testnet',
     endpoint: clusterApiUrl('testnet'),
     network: ClusterNetwork.Testnet,

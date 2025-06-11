@@ -19,6 +19,7 @@ const MAPPING = {
   'gearshape.fill': 'settings',
   'house.fill': 'home',
   'paperplane.fill': 'send',
+  'wallet.pass.fill': 'wallet',
 } as IconMapping
 
 /**
