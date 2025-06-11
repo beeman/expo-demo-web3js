@@ -5,6 +5,8 @@
     "android:build": "expo prebuild -p android",
     "ci": "tsc --noEmit && expo lint && npm run android:build",
     "dev": "expo start",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
     "ios": "expo run:ios",
     "lint": "expo lint",
     "reset-project": "node ./scripts/reset-project.js",
@@ -48,6 +50,7 @@
     "@types/react": "~19.0.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "prettier": "^3.5.3",
     "typescript": "~5.8.3"
   },
   "private": true
