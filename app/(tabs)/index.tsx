@@ -23,8 +23,8 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Gm Expodemoweb3js!</ThemedText>
-        <HelloWave />
+        <ThemedText type="title">Expo Demo Web3js!</ThemedText>
+        <HelloWave/>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Eat</ThemedText>
