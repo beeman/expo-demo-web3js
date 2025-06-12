@@ -1,21 +1,15 @@
 import { Image } from 'expo-image'
-import { Platform, StyleSheet } from 'react-native'
+import { Platform } from 'react-native'
 
 import { Collapsible } from '@/components/Collapsible'
 import { ExternalLink } from '@/components/ExternalLink'
 import { ParallaxScrollView } from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
-import { LinearGradient } from '@/components/LinearGradient'
+import { GradientHeader } from '@/components/GradientHeader'
 
 export default function TabTwoScreen() {
   return (
-    <ParallaxScrollView headerImage={<LinearGradient />}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
+    <ParallaxScrollView header={<GradientHeader title="Explore" subtitle="Some components to get you started." />}>
       <Collapsible title="File-based routing">
         <ThemedText>
           This app has two screens: <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
@@ -83,16 +77,3 @@ export default function TabTwoScreen() {
     </ParallaxScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-})

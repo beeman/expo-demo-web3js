@@ -3,12 +3,13 @@
   "scripts": {
     "android": "expo run:android",
     "android:build": "expo prebuild -p android",
-    "ci": "tsc --noEmit && expo lint && npm run android:build",
+    "ci": "tsc --noEmit && npm run lint:check && npm run fmt:check && npm run android:build",
     "dev": "expo start",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "ios": "expo run:ios",
-    "lint": "expo lint",
+    "lint": "expo lint --fix",
+    "lint:check": "expo lint",
     "reset-project": "node ./scripts/reset-project.js",
     "start": "expo start",
     "web": "expo start --web"

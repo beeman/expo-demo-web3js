@@ -20,13 +20,13 @@ export enum ClusterNetwork {
 export const defaultClusters: readonly Cluster[] = [
   {
     id: 'solana:devnet',
-    name: 'devnet',
+    name: 'Devnet',
     endpoint: clusterApiUrl('devnet'),
     network: ClusterNetwork.Devnet,
   },
   {
     id: 'solana:testnet',
-    name: 'testnet',
+    name: 'Testnet',
     endpoint: clusterApiUrl('testnet'),
     network: ClusterNetwork.Testnet,
   },

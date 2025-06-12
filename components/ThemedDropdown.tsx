@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useThemeColor } from '@/hooks/useThemeColor'
-import { Cluster } from './ClusterProvider'
 
-export function ClusterUiDropdown({
-  clusters,
-  selectedCluster,
-  selectCluster,
+export function ThemedDropdown({
+  items,
+  selectedItem,
+  selectItem,
 }: {
-  clusters: readonly Cluster[]
-  selectedCluster: Cluster
-  selectCluster: (cluster: Cluster) => void
+  items: readonly string[]
+  selectedItem: string
+  selectItem: (item: string) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -22,20 +21,20 @@ export function ClusterUiDropdown({
   return (
     <View style={[styles.container, { backgroundColor }]}>
       <TouchableOpacity style={[styles.header, { backgroundColor, borderColor }]} onPress={() => setIsOpen(!isOpen)}>
-        <Text style={{ color: textColor }}>{selectedCluster.name}</Text>
+        <Text style={{ color: textColor }}>{selectedItem}</Text>
       </TouchableOpacity>
       {isOpen && (
         <View style={[styles.list, { backgroundColor: listBackgroundColor, borderColor }]}>
-          {clusters.map((option, index) => (
+          {items.map((option, index) => (
             <TouchableOpacity
               key={index}
               style={[styles.item, { borderBottomColor: borderColor }]}
               onPress={() => {
-                selectCluster(option)
+                selectItem(option)
                 setIsOpen(false)
               }}
             >
-              <Text style={{ color: textColor }}>{option.name}</Text>
+              <Text style={{ color: textColor }}>{option}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -47,6 +46,7 @@ export function ClusterUiDropdown({
 const styles = StyleSheet.create({
   container: {
     width: 200,
+    borderRadius: 5,
   },
   header: {
     padding: 10,

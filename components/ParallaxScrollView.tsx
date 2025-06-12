@@ -6,11 +6,11 @@ import { useBottomTabOverflow } from '@/components/ui/TabBarBackground'
 
 export function ParallaxScrollView({
   children,
-  headerHeight = 250,
-  headerImage,
+  header,
+  headerHeight = 150,
 }: PropsWithChildren<{
+  header: ReactElement
   headerHeight?: number
-  headerImage: ReactElement
 }>) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>()
   const scrollOffset = useScrollViewOffset(scrollRef)
@@ -39,7 +39,7 @@ export function ParallaxScrollView({
         contentContainerStyle={{ paddingBottom: bottom }}
       >
         <Animated.View style={[{ ...styles.header, height: headerHeight }, headerAnimatedStyle]}>
-          {headerImage}
+          {header}
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>
       </Animated.ScrollView>

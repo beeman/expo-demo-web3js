@@ -1,10 +1,10 @@
 import { ParallaxScrollView } from '@/components/ParallaxScrollView'
 import { WalletFeature } from '@/components/wallet/WalletFeature'
-import { LinearGradient } from '@/components/LinearGradient'
+import { GradientHeader } from '@/components/GradientHeader'
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView headerImage={<LinearGradient />}>
+    <ParallaxScrollView header={<GradientHeader title="Wallet" subtitle="Connect your Solana wallet and explore." />}>
       <WalletFeature />
     </ParallaxScrollView>
   )
