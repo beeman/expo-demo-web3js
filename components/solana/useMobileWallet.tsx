@@ -1,8 +1,8 @@
 import { transact } from '@solana-mobile/mobile-wallet-adapter-protocol-web3js'
-import { Account, useAuthorization } from './useAuthorization'
+import { SignInPayload } from '@solana-mobile/mobile-wallet-adapter-protocol'
 import { Transaction, TransactionSignature, VersionedTransaction } from '@solana/web3.js'
 import { useCallback, useMemo } from 'react'
-import { SignInPayload } from '@solana-mobile/mobile-wallet-adapter-protocol'
+import { Account, useAuthorization } from './useAuthorization'
 
 export function useMobileWallet() {
   const { authorizeSessionWithSignIn, authorizeSession, deauthorizeSession } = useAuthorization()
