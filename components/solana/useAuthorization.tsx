@@ -13,9 +13,13 @@ import { toUint8Array } from 'js-base64'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
 import { useCluster } from '@/components/cluster/ClusterProvider'
+import { WalletIcon } from '@wallet-standard/core'
+import { ellipsify } from '@/utils/ellipsify'
 
 export type Account = Readonly<{
   address: Base64EncodedAddress
+  displayAddress?: string
+  icon?: WalletIcon
   label?: string
   publicKey: PublicKey
 }>
@@ -27,9 +31,14 @@ type WalletAuthorization = Readonly<{
 }>
 
 function getAccountFromAuthorizedAccount(account: AuthorizedAccount): Account {
+  const publicKey = getPublicKeyFromAddress(account.address)
   return {
-    ...account,
-    publicKey: getPublicKeyFromAddress(account.address),
+    address: account.address,
+    // TODO: Fix?
+    displayAddress: (account as unknown as { display_address: string }).display_address,
+    icon: account.icon,
+    label: account.label ?? ellipsify(publicKey.toString(), 8),
+    publicKey,
   }
 }
 

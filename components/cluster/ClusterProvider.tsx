@@ -1,6 +1,6 @@
-import { clusterApiUrl } from '@solana/web3.js'
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 import { IdentifierString } from '@wallet-standard/base'
+import { useAppConfig } from '@/app/app-config'
 
 export interface Cluster {
   id: IdentifierString
@@ -17,21 +17,6 @@ export enum ClusterNetwork {
   Custom = 'custom',
 }
 
-export const defaultClusters: readonly Cluster[] = [
-  {
-    id: 'solana:devnet',
-    name: 'Devnet',
-    endpoint: clusterApiUrl('devnet'),
-    network: ClusterNetwork.Devnet,
-  },
-  {
-    id: 'solana:testnet',
-    name: 'Testnet',
-    endpoint: clusterApiUrl('testnet'),
-    network: ClusterNetwork.Testnet,
-  },
-]
-
 export interface ClusterProviderContext {
   selectedCluster: Cluster
   clusters: Cluster[]
@@ -43,15 +28,16 @@ export interface ClusterProviderContext {
 const Context = createContext<ClusterProviderContext>({} as ClusterProviderContext)
 
 export function ClusterProvider({ children }: { children: ReactNode }) {
-  const [selectedCluster, setSelectedCluster] = useState<Cluster>(defaultClusters[0])
+  const { clusters } = useAppConfig()
+  const [selectedCluster, setSelectedCluster] = useState<Cluster>(clusters[0])
   const value: ClusterProviderContext = useMemo(
     () => ({
       selectedCluster,
-      clusters: [...defaultClusters].sort((a, b) => (a.name > b.name ? 1 : -1)),
+      clusters: [...clusters].sort((a, b) => (a.name > b.name ? 1 : -1)),
       setSelectedCluster: (cluster: Cluster) => setSelectedCluster(cluster),
       getExplorerUrl: (path: string) => `https://explorer.solana.com/${path}${getClusterUrlParam(selectedCluster)}`,
     }),
-    [selectedCluster, setSelectedCluster],
+    [selectedCluster, setSelectedCluster, clusters],
   )
   return <Context.Provider value={value}>{children}</Context.Provider>
 }

@@ -8,9 +8,7 @@ export function useMobileWallet() {
   const { authorizeSessionWithSignIn, authorizeSession, deauthorizeSession } = useAuthorization()
 
   const connect = useCallback(async (): Promise<Account> => {
-    console.log('connect pre-transact')
     return await transact(async (wallet) => {
-      console.log('connect post-transact')
       return await authorizeSession(wallet)
     })
   }, [authorizeSession])

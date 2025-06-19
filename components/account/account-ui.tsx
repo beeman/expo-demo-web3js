@@ -1,4 +1,4 @@
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import {
   useGetBalance,
   useGetTokenAccountBalance,
@@ -6,35 +6,23 @@ import {
   useRequestAirdrop,
   useTransferSol,
 } from './account-data-access'
-import {
-  ActivityIndicator,
-  Button,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native'
-import { useMemo, useState } from 'react'
+import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native'
+import { useState } from 'react'
 import { ThemedText } from '@/components/ThemedText'
 import { AppModal } from '../AppModal'
 import { ThemedView } from '@/components/ThemedView'
 import { ellipsify } from '@/utils/ellipsify'
-
-function lamportsToSol(balance: number) {
-  return Math.round((balance / LAMPORTS_PER_SOL) * 100000) / 100000
-}
+import { lamportsToSol } from '@/utils/lamports-to-sol'
+import { Button } from '@react-navigation/elements'
+import { WalletUiButtonDisconnect } from '@/components/solana/wallet-ui-button-disconnect'
 
 export function AccountBalance({ address }: { address: PublicKey }) {
   const query = useGetBalance({ address })
+
   return (
-    <>
-      <View style={styles.accountBalance}>
-        <ThemedText type="subtitle">Current Balance</ThemedText>
-        <ThemedText type="title">{query.data ? lamportsToSol(query.data) : '...'} SOL</ThemedText>
-      </View>
-    </>
+    <View style={styles.accountBalance}>
+      <ThemedText type="title">{query.data ? lamportsToSol(query.data) : '...'} SOL</ThemedText>
+    </View>
   )
 }
 
@@ -50,9 +38,12 @@ export function AccountButtonGroup({ address }: { address: PublicKey }) {
       <ModalTransferSol hide={() => setShowModalSend(false)} show={showModalSend} address={address} />
       <ModalReceiveSol hide={() => setShowModalReceive(false)} show={showModalReceive} address={address} />
       <ThemedView style={styles.accountButtonGroup}>
-        <Button disabled={requestAirdrop.isPending} onPress={() => setShowModalAirdrop(true)} title="Airdrop"></Button>
-        <Button onPress={() => setShowModalSend(true)} title="Send" />
-        <Button onPress={() => setShowModalReceive(true)} title="Receive" />
+        <Button disabled={requestAirdrop.isPending} onPress={() => setShowModalAirdrop(true)}>
+          Airdrop
+        </Button>
+        <Button onPress={() => setShowModalSend(true)}>Send</Button>
+        <Button onPress={() => setShowModalReceive(true)}>Receive</Button>
+        <WalletUiButtonDisconnect />
       </ThemedView>
     </>
   )
@@ -73,7 +64,7 @@ export function ModalAirdropRequest({ hide, show, address }: { hide: () => void;
       submitDisabled={requestAirdrop.isPending}
     >
       <View style={{ padding: 4 }}>
-        <ThemedText>Request an airdrop of 1 SOL to your connected wallet account.</ThemedText>
+        <ThemedText>Request an airdrop of 1 SOL to your connected account.</ThemedText>
       </View>
     </AppModal>
   )
@@ -124,92 +115,49 @@ export function ModalReceiveSol({ hide, show, address }: { hide: () => void; sho
 
 export function AccountTokens({ address }: { address: PublicKey }) {
   let query = useGetTokenAccounts({ address })
-  const [currentPage, setCurrentPage] = useState(0)
-  const itemsPerPage = 3 // Items per page
-
-  const items = useMemo(() => {
-    const start = currentPage * itemsPerPage
-    const end = start + itemsPerPage
-    return query.data?.slice(start, end) ?? []
-  }, [query.data, currentPage, itemsPerPage])
-
-  // Calculate the total number of pages
-  const numberOfPages = useMemo(() => {
-    return Math.ceil((query.data?.length ?? 0) / itemsPerPage)
-  }, [query.data, itemsPerPage])
+  const items = query.data ?? []
 
   return (
     <>
-      <ThemedText type="title">Token Accounts</ThemedText>
-      <ScrollView>
-        {query.isLoading && <ActivityIndicator animating={true} />}
-        {query.isError && (
-          <ThemedText style={{ padding: 8, backgroundColor: 'red' }}>
-            Error: {query.error?.message.toString()}
-          </ThemedText>
-        )}
-        {query.isSuccess && (
-          <>
-            <View style={{ padding: 12 }}>
-              {/* Header */}
-              <ThemedView style={{ flexDirection: 'row', padding: 8, width: '100%' }}>
-                <ThemedText style={{ flex: 1, fontWeight: 'bold' }}>Public Key</ThemedText>
-                <ThemedText style={{ flex: 1, fontWeight: 'bold' }}>Mint</ThemedText>
-                <ThemedText style={{ flex: 1, fontWeight: 'bold', textAlign: 'right' }}>Balance</ThemedText>
-              </ThemedView>
-
-              {/* No Data */}
-              {query.data.length === 0 && (
-                <View style={{ marginTop: 12 }}>
-                  <ThemedText>No token accounts found.</ThemedText>
-                </View>
-              )}
-
-              {/* Data Rows */}
-              <FlatList
-                data={items}
-                keyExtractor={(item) => item.pubkey.toString()}
-                renderItem={({ item: { account, pubkey } }) => (
-                  <View style={{ flexDirection: 'row', padding: 8, borderBottomWidth: 1, borderBottomColor: '#ddd' }}>
-                    <ThemedText style={{ flex: 1 }}>{ellipsify(pubkey.toString())}</ThemedText>
-                    <ThemedText style={{ flex: 1 }}>{ellipsify(account.data.parsed.info.mint)}</ThemedText>
-                    <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                      <AccountTokenBalance address={pubkey} />
-                    </View>
-                  </View>
-                )}
-              />
-
-              {/* Pagination */}
-              {query.data?.length > 3 && (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginTop: 12,
-                  }}
-                >
-                  <ThemedText>{`${currentPage + 1} of ${numberOfPages}`}</ThemedText>
-                  <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity disabled={currentPage === 0} onPress={() => setCurrentPage(currentPage - 1)}>
-                      <ThemedText style={{ padding: 8, opacity: currentPage === 0 ? 0.5 : 1 }}>Previous</ThemedText>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      disabled={currentPage === numberOfPages - 1}
-                      onPress={() => setCurrentPage(currentPage + 1)}
-                    >
-                      <ThemedText style={{ padding: 8, opacity: currentPage === numberOfPages - 1 ? 0.5 : 1 }}>
-                        Next
-                      </ThemedText>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
+      <ThemedText type="subtitle" style={{ marginBottom: 8 }}>
+        Token Accounts
+      </ThemedText>
+      {query.isLoading && <ActivityIndicator animating={true} />}
+      {query.isError && (
+        <ThemedText style={{ padding: 8, backgroundColor: 'red' }}>Error: {query.error?.message.toString()}</ThemedText>
+      )}
+      {query.isSuccess && (
+        <View style={{ padding: 0 }}>
+          <ThemedView style={{ flexDirection: 'row', paddingHorizontal: 8, width: '100%' }}>
+            <ThemedText style={{ flex: 1, fontWeight: 'bold' }}>Public Key</ThemedText>
+            <ThemedText style={{ flex: 1, fontWeight: 'bold' }}>Mint</ThemedText>
+            <ThemedText style={{ flex: 1, fontWeight: 'bold', textAlign: 'right' }}>Balance</ThemedText>
+          </ThemedView>
+          {query.data.length === 0 && (
+            <View style={{ marginTop: 12 }}>
+              <ThemedText>No token accounts found.</ThemedText>
             </View>
-          </>
-        )}
-      </ScrollView>
+          )}
+
+          {items.map((item) => (
+            <ThemedView
+              key={item.pubkey.toString()}
+              style={{
+                flexDirection: 'row',
+                padding: 8,
+                borderBottomWidth: 1,
+                borderBottomColor: '#ddd',
+              }}
+            >
+              <ThemedText style={{ flex: 1 }}>{ellipsify(item.pubkey.toString())}</ThemedText>
+              <ThemedText style={{ flex: 1 }}>{ellipsify(item.account.data.parsed.info.mint)}</ThemedText>
+              <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <AccountTokenBalance address={item.pubkey} />
+              </View>
+            </ThemedView>
+          ))}
+        </View>
+      )}
     </>
   )
 }

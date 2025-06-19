@@ -10,7 +10,7 @@ import {
 import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useConnection } from '../solana/SolanaProvider'
-import { useMobileWallet } from '@/components/solana/useMobileWallet'
+import { useWalletUi } from '@/components/solana/use-wallet-ui'
 
 export function useGetBalance({ address }: { address: PublicKey }) {
   const connection = useConnection()
@@ -61,7 +61,7 @@ export function useGetTokenAccountBalance({ address }: { address: PublicKey }) {
 export function useTransferSol({ address }: { address: PublicKey }) {
   const connection = useConnection()
   const client = useQueryClient()
-  const wallet = useMobileWallet()
+  const { signAndSendTransaction } = useWalletUi()
 
   return useMutation({
     mutationKey: ['transfer-sol', { endpoint: connection.rpcEndpoint, address }],
@@ -76,7 +76,7 @@ export function useTransferSol({ address }: { address: PublicKey }) {
         })
 
         // Send transaction and await for signature
-        signature = await wallet.signAndSendTransaction(transaction, minContextSlot)
+        signature = await signAndSendTransaction(transaction, minContextSlot)
 
         // Send transaction and await for signature
         await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
@@ -89,11 +89,9 @@ export function useTransferSol({ address }: { address: PublicKey }) {
         return
       }
     },
-    onSuccess: (signature) => {
-      if (signature) {
-        console.log(signature)
-      }
-      return Promise.all([
+    onSuccess: async (signature) => {
+      console.log(signature)
+      await Promise.all([
         client.invalidateQueries({
           queryKey: ['get-balance', { endpoint: connection.rpcEndpoint, address }],
         }),
@@ -123,8 +121,8 @@ export function useRequestAirdrop({ address }: { address: PublicKey }) {
       await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
       return signature
     },
-    onSuccess: (signature) => {
-      return Promise.all([
+    onSuccess: async (signature) => {
+      await Promise.all([
         client.invalidateQueries({
           queryKey: ['get-balance', { endpoint: connection.rpcEndpoint, address }],
         }),
