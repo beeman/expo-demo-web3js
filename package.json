@@ -1,5 +1,14 @@
 {
   "name": "expo-demo-web3js",
+  "create-solana-dapp": {
+    "instructions": [
+      "To buld the Android app locally, run this:",
+      "+{pm} run android"
+    ],
+    "versions:": {
+      "adb": "33.0.0"
+    }
+  },
   "scripts": {
     "android": "expo run:android",
     "android:build": "expo prebuild -p android",
