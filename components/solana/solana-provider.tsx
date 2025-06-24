@@ -1,6 +1,6 @@
 import { Connection, type ConnectionConfig } from '@solana/web3.js'
 import React, { createContext, type ReactNode, useContext, useMemo } from 'react'
-import { useCluster } from '../cluster/ClusterProvider'
+import { useCluster } from '../cluster/cluster-provider'
 
 export interface SolanaProviderState {
   connection: Connection

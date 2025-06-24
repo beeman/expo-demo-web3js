@@ -1,4 +1,4 @@
-import { Cluster, ClusterNetwork } from '@/components/cluster/ClusterProvider'
+import { Cluster, ClusterNetwork } from '@/components/cluster/cluster-provider'
 import { clusterApiUrl } from '@solana/web3.js'
 
 export interface AppConfig {

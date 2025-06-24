@@ -1,22 +1,22 @@
-import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
-import { useCluster } from '../cluster/ClusterProvider'
-import { ClusterUiVersion } from '@/components/cluster/ClusterUiVersion'
-import { ThemedDropdown } from '@/components/ThemedDropdown'
+import { AppText } from '@/components/app-text'
+import { useCluster } from '../cluster/cluster-provider'
+import { ClusterUiVersion } from '@/components/cluster/cluster-ui-version'
+import { AppDropdown } from '@/components/app-dropdown'
 import { ClusterUiGenesisHash } from '@/components/cluster/cluster-ui-genesis-hash'
+import { AppView } from '@/components/app-view'
 
-export function SettingCluster() {
+export function SettingsUiCluster() {
   const { selectedCluster, clusters, setSelectedCluster } = useCluster()
   return (
-    <ThemedView style={{ gap: 8, marginBottom: 8 }}>
-      <ThemedText type="subtitle">Cluster</ThemedText>
+    <AppView>
+      <AppText type="subtitle">Cluster</AppText>
       <ClusterUiVersion selectedCluster={selectedCluster} />
       <ClusterUiGenesisHash selectedCluster={selectedCluster} />
-      <ThemedDropdown
+      <AppDropdown
         items={clusters.map((c) => c.name)}
         selectedItem={selectedCluster.name}
         selectItem={(name) => setSelectedCluster(clusters.find((c) => c.name === name)!)}
       />
-    </ThemedView>
+    </AppView>
   )
 }

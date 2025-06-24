@@ -8,25 +8,27 @@ import {
 } from './account-data-access'
 import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native'
 import { useState } from 'react'
-import { ThemedText } from '@/components/ThemedText'
-import { AppModal } from '../AppModal'
-import { ThemedView } from '@/components/ThemedView'
+import { AppText } from '@/components/app-text'
+import { AppModal } from '../app-modal'
 import { ellipsify } from '@/utils/ellipsify'
 import { lamportsToSol } from '@/utils/lamports-to-sol'
 import { Button } from '@react-navigation/elements'
 import { WalletUiButtonDisconnect } from '@/components/solana/wallet-ui-button-disconnect'
+import { AppView } from '@/components/app-view'
 
 export function AccountBalance({ address }: { address: PublicKey }) {
   const query = useGetBalance({ address })
 
   return (
     <View style={styles.accountBalance}>
-      <ThemedText type="title">{query.data ? lamportsToSol(query.data) : '...'} SOL</ThemedText>
+      <AppText type="title">
+        {query.isLoading ? <ActivityIndicator /> : query.data ? lamportsToSol(query.data) : '0'} SOL
+      </AppText>
     </View>
   )
 }
 
-export function AccountButtonGroup({ address }: { address: PublicKey }) {
+export function AccountUiButtonGroup({ address }: { address: PublicKey }) {
   const requestAirdrop = useRequestAirdrop({ address })
   const [showModalAirdrop, setShowModalAirdrop] = useState(false)
   const [showModalReceive, setShowModalReceive] = useState(false)
@@ -37,14 +39,14 @@ export function AccountButtonGroup({ address }: { address: PublicKey }) {
       <ModalAirdropRequest hide={() => setShowModalAirdrop(false)} show={showModalAirdrop} address={address} />
       <ModalTransferSol hide={() => setShowModalSend(false)} show={showModalSend} address={address} />
       <ModalReceiveSol hide={() => setShowModalReceive(false)} show={showModalReceive} address={address} />
-      <ThemedView style={styles.accountButtonGroup}>
+      <AppView style={styles.accountButtonGroup}>
         <Button disabled={requestAirdrop.isPending} onPress={() => setShowModalAirdrop(true)}>
           Airdrop
         </Button>
         <Button onPress={() => setShowModalSend(true)}>Send</Button>
         <Button onPress={() => setShowModalReceive(true)}>Receive</Button>
         <WalletUiButtonDisconnect />
-      </ThemedView>
+      </AppView>
     </>
   )
 }
@@ -64,7 +66,7 @@ export function ModalAirdropRequest({ hide, show, address }: { hide: () => void;
       submitDisabled={requestAirdrop.isPending}
     >
       <View style={{ padding: 4 }}>
-        <ThemedText>Request an airdrop of 1 SOL to your connected account.</ThemedText>
+        <AppText>Request an airdrop of 1 SOL to your connected account.</AppText>
       </View>
     </AppModal>
   )
@@ -91,9 +93,9 @@ export function ModalTransferSol({ hide, show, address }: { hide: () => void; sh
       submitDisabled={!destinationAddress || !amount}
     >
       <View style={{ padding: 20 }}>
-        <ThemedText>Amount (SOL)</ThemedText>
+        <AppText>Amount (SOL)</AppText>
         <TextInput value={amount} onChangeText={setAmount} keyboardType="numeric" style={{ marginBottom: 20 }} />
-        <ThemedText>Destination Address</ThemedText>
+        <AppText>Destination Address</AppText>
         <TextInput value={destinationAddress} onChangeText={setDestinationAddress} />
       </View>
     </AppModal>
@@ -104,10 +106,10 @@ export function ModalReceiveSol({ hide, show, address }: { hide: () => void; sho
   return (
     <AppModal title="Receive assets" hide={hide} show={show}>
       <View style={{ padding: 4 }}>
-        <ThemedText selectable={true} type="default">
+        <AppText selectable={true} type="default">
           You can receive assets by sending them to your public key:{'\n\n'}
-          <ThemedText type="defaultSemiBold">{address.toBase58()}</ThemedText>
-        </ThemedText>
+          <AppText type="defaultSemiBold">{address.toBase58()}</AppText>
+        </AppText>
       </View>
     </AppModal>
   )
@@ -119,28 +121,28 @@ export function AccountTokens({ address }: { address: PublicKey }) {
 
   return (
     <>
-      <ThemedText type="subtitle" style={{ marginBottom: 8 }}>
+      <AppText type="subtitle" style={{ marginBottom: 8 }}>
         Token Accounts
-      </ThemedText>
+      </AppText>
       {query.isLoading && <ActivityIndicator animating={true} />}
       {query.isError && (
-        <ThemedText style={{ padding: 8, backgroundColor: 'red' }}>Error: {query.error?.message.toString()}</ThemedText>
+        <AppText style={{ padding: 8, backgroundColor: 'red' }}>Error: {query.error?.message.toString()}</AppText>
       )}
       {query.isSuccess && (
         <View style={{ padding: 0 }}>
-          <ThemedView style={{ flexDirection: 'row', paddingHorizontal: 8, width: '100%' }}>
-            <ThemedText style={{ flex: 1, fontWeight: 'bold' }}>Public Key</ThemedText>
-            <ThemedText style={{ flex: 1, fontWeight: 'bold' }}>Mint</ThemedText>
-            <ThemedText style={{ flex: 1, fontWeight: 'bold', textAlign: 'right' }}>Balance</ThemedText>
-          </ThemedView>
+          <AppView style={{ flexDirection: 'row', paddingHorizontal: 8, width: '100%' }}>
+            <AppText style={{ flex: 1, fontWeight: 'bold' }}>Public Key</AppText>
+            <AppText style={{ flex: 1, fontWeight: 'bold' }}>Mint</AppText>
+            <AppText style={{ flex: 1, fontWeight: 'bold', textAlign: 'right' }}>Balance</AppText>
+          </AppView>
           {query.data.length === 0 && (
             <View style={{ marginTop: 12 }}>
-              <ThemedText>No token accounts found.</ThemedText>
+              <AppText>No token accounts found.</AppText>
             </View>
           )}
 
           {items.map((item) => (
-            <ThemedView
+            <AppView
               key={item.pubkey.toString()}
               style={{
                 flexDirection: 'row',
@@ -149,12 +151,12 @@ export function AccountTokens({ address }: { address: PublicKey }) {
                 borderBottomColor: '#ddd',
               }}
             >
-              <ThemedText style={{ flex: 1 }}>{ellipsify(item.pubkey.toString())}</ThemedText>
-              <ThemedText style={{ flex: 1 }}>{ellipsify(item.account.data.parsed.info.mint)}</ThemedText>
+              <AppText style={{ flex: 1 }}>{ellipsify(item.pubkey.toString())}</AppText>
+              <AppText style={{ flex: 1 }}>{ellipsify(item.account.data.parsed.info.mint)}</AppText>
               <View style={{ flex: 1, alignItems: 'flex-end' }}>
                 <AccountTokenBalance address={item.pubkey} />
               </View>
-            </ThemedView>
+            </AppView>
           ))}
         </View>
       )}
@@ -167,9 +169,9 @@ export function AccountTokenBalance({ address }: { address: PublicKey }) {
   return query.isLoading ? (
     <ActivityIndicator animating={true} />
   ) : query.data ? (
-    <ThemedText>{query.data?.value.uiAmount}</ThemedText>
+    <AppText>{query.data?.value.uiAmount}</AppText>
   ) : (
-    <ThemedText>Error</ThemedText>
+    <AppText>Error</AppText>
   )
 }
 

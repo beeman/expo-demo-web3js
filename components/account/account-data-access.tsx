@@ -9,7 +9,7 @@ import {
 } from '@solana/web3.js'
 import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useConnection } from '../solana/SolanaProvider'
+import { useConnection } from '../solana/solana-provider'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 
 export function useGetBalance({ address }: { address: PublicKey }) {

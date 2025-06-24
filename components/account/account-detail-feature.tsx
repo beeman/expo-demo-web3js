@@ -1,27 +1,30 @@
-import { AccountBalance, AccountButtonGroup, AccountTokens } from './account-ui'
-import { ThemedView } from '@/components/ThemedView'
+import { AccountBalance, AccountTokens, AccountUiButtonGroup } from './account-ui'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
-import { ThemedText } from '@/components/ThemedText'
+import { AppText } from '@/components/app-text'
 import { ellipsify } from '@/utils/ellipsify'
 import { WalletUiButtonConnect } from '@/components/solana/wallet-ui-button-connect'
+import { AppView } from '@/components/app-view'
 
 export function AccountDetailFeature() {
   const { account } = useWalletUi()
 
   return account ? (
     <>
-      <ThemedView style={{ alignItems: 'center', gap: 4 }}>
+      <AppView style={{ alignItems: 'center', gap: 4 }}>
         <AccountBalance address={account.publicKey} />
-        <ThemedText style={{ opacity: 0.7 }}>{ellipsify(account.publicKey.toString(), 8)}</ThemedText>
-      </ThemedView>
-      <ThemedView style={{ marginTop: 16, alignItems: 'center' }}>
-        <AccountButtonGroup address={account.publicKey} />
-      </ThemedView>
-      <ThemedView style={{ marginTop: 16, alignItems: 'center' }}>
+        <AppText style={{ opacity: 0.7 }}>{ellipsify(account.publicKey.toString(), 8)}</AppText>
+      </AppView>
+      <AppView style={{ marginTop: 16, alignItems: 'center' }}>
+        <AccountUiButtonGroup address={account.publicKey} />
+      </AppView>
+      <AppView style={{ marginTop: 16, alignItems: 'center' }}>
         <AccountTokens address={account.publicKey} />
-      </ThemedView>
+      </AppView>
     </>
   ) : (
-    <WalletUiButtonConnect />
+    <AppView style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
+      <AppText>Connect your wallet.</AppText>
+      <WalletUiButtonConnect />
+    </AppView>
   )
 }

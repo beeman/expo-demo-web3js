@@ -1,8 +1,8 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Cluster } from './ClusterProvider'
-import { useConnection } from '../solana/SolanaProvider'
-import { ThemedText } from '@/components/ThemedText'
+import { Cluster } from './cluster-provider'
+import { useConnection } from '../solana/solana-provider'
+import { AppText } from '@/components/app-text'
 
 export function ClusterUiVersion({ selectedCluster }: { selectedCluster: Cluster }) {
   const connection = useConnection()
@@ -17,7 +17,5 @@ export function ClusterUiVersion({ selectedCluster }: { selectedCluster: Cluster
       }),
   })
 
-  return (
-    <ThemedText>Version: {query.isLoading ? 'Loading...' : `${query.data?.core} (${query.data?.features})`}</ThemedText>
-  )
+  return <AppText>Version: {query.isLoading ? 'Loading...' : `${query.data?.core} (${query.data?.features})`}</AppText>
 }

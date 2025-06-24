@@ -2,8 +2,8 @@ import React from 'react'
 import { Alert, Modal, StyleSheet, View, ViewStyle } from 'react-native'
 import { Button } from '@react-navigation/elements'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
+import { AppText } from '@/components/app-text'
+import { AppView } from '@/components/app-view'
 
 interface AppModalProps {
   children: React.ReactNode
@@ -30,10 +30,10 @@ export function AppModal({ children, title, hide, show, submit, submitLabel, sub
           }}
         >
           <View style={styles.centeredView}>
-            <ThemedView style={styles.modalView}>
-              <ThemedText type="default" style={{ marginBottom: 20 }}>
+            <AppView style={styles.modalView}>
+              <AppText type="default" style={{ marginBottom: 20 }}>
                 {title}
-              </ThemedText>
+              </AppText>
               {children}
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 20 }}>
                 {submit ? (
@@ -48,7 +48,7 @@ export function AppModal({ children, title, hide, show, submit, submitLabel, sub
                   Close
                 </Button>
               </View>
-            </ThemedView>
+            </AppView>
           </View>
         </Modal>
       </SafeAreaView>

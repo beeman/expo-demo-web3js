@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactNode } from 'react'
-import { ClusterProvider } from './cluster/ClusterProvider'
-import { SolanaProvider } from '@/components/solana/SolanaProvider'
+import { PropsWithChildren } from 'react'
+import { ClusterProvider } from './cluster/cluster-provider'
+import { SolanaProvider } from '@/components/solana/solana-provider'
 
 const queryClient = new QueryClient()
 
-export function AppProviders({ children }: { children: ReactNode }) {
+export function AppProviders({ children }: PropsWithChildren) {
   return (
     <QueryClientProvider client={queryClient}>
       <ClusterProvider>

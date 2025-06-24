@@ -1,7 +1,7 @@
-import { Cluster } from '@/components/cluster/ClusterProvider'
-import { useConnection } from '@/components/solana/SolanaProvider'
+import { Cluster } from '@/components/cluster/cluster-provider'
+import { useConnection } from '@/components/solana/solana-provider'
 import { useQuery } from '@tanstack/react-query'
-import { ThemedText } from '@/components/ThemedText'
+import { AppText } from '@/components/app-text'
 import React from 'react'
 import { ellipsify } from '@/utils/ellipsify'
 
@@ -12,5 +12,5 @@ export function ClusterUiGenesisHash({ selectedCluster }: { selectedCluster: Clu
     queryFn: () => connection.getGenesisHash(),
   })
 
-  return <ThemedText>Genesis Hash: {query.isLoading ? 'Loading...' : `${ellipsify(query.data, 8)}`}</ThemedText>
+  return <AppText>Genesis Hash: {query.isLoading ? 'Loading...' : `${ellipsify(query.data, 8)}`}</AppText>
 }

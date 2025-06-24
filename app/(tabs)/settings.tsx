@@ -1,21 +1,23 @@
-import { ParallaxScrollView } from '@/components/ParallaxScrollView'
-import { SettingCluster } from '@/components/settings/SettingCluster'
-import { GradientHeader } from '@/components/GradientHeader'
-import { ThemedText } from '@/components/ThemedText'
-import { SettingApp } from '@/components/settings/setting-app'
+import { SettingsUiCluster } from '@/components/settings/settings-ui-cluster'
+import { AppText } from '@/components/app-text'
+import { SettingsAppConfig } from '@/components/settings/settings-app-config'
+import { SettingsUiAccount } from '@/components/settings/settings-ui-account'
 
-export default function SettingsScreen() {
+import { AppPage } from '@/components/app-page'
+
+export default function TabSettingsScreen() {
   return (
-    <ParallaxScrollView header={<GradientHeader title="Settings" subtitle="Manage your app settings here." />}>
-      <SettingApp />
-      <SettingCluster />
-      <ThemedText type="default" style={{ opacity: 0.5, fontSize: 14 }}>
+    <AppPage>
+      <SettingsUiAccount />
+      <SettingsAppConfig />
+      <SettingsUiCluster />
+      <AppText type="default" style={{ opacity: 0.5, fontSize: 14 }}>
         Configure app info and clusters in{' '}
-        <ThemedText type="defaultSemiBold" style={{ fontSize: 14 }}>
+        <AppText type="defaultSemiBold" style={{ fontSize: 14 }}>
           app/app-config.tsx
-        </ThemedText>
+        </AppText>
         .
-      </ThemedText>
-    </ParallaxScrollView>
+      </AppText>
+    </AppPage>
   )
 }

@@ -12,7 +12,7 @@ import {
 import { toUint8Array } from 'js-base64'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo } from 'react'
-import { useCluster } from '@/components/cluster/ClusterProvider'
+import { useCluster } from '@/components/cluster/cluster-provider'
 import { WalletIcon } from '@wallet-standard/core'
 import { ellipsify } from '@/utils/ellipsify'
 
@@ -111,9 +111,15 @@ function useFetchAuthorization() {
   })
 }
 
+function useInvalidateAuthorizations() {
+  const client = useQueryClient()
+  return () => client.invalidateQueries({ queryKey })
+}
+
 export function useAuthorization() {
   const { selectedCluster } = useCluster()
   const fetchQuery = useFetchAuthorization()
+  const invalidateAuthorizations = useInvalidateAuthorizations()
   const persistMutation = usePersistAuthorization()
 
   const handleAuthorizationResult = useCallback(
@@ -164,12 +170,18 @@ export function useAuthorization() {
     [fetchQuery.data?.authToken, persistMutation],
   )
 
+  const deauthorizeSessions = useCallback(async () => {
+    await invalidateAuthorizations()
+    await persistMutation.mutateAsync(null)
+  }, [invalidateAuthorizations, persistMutation])
+
   return useMemo(
     () => ({
       accounts: fetchQuery.data?.accounts ?? null,
       authorizeSession,
       authorizeSessionWithSignIn,
       deauthorizeSession,
+      deauthorizeSessions,
       isLoading: fetchQuery.isLoading,
       selectedAccount: fetchQuery.data?.selectedAccount ?? null,
     }),
@@ -177,6 +189,7 @@ export function useAuthorization() {
       authorizeSession,
       authorizeSessionWithSignIn,
       deauthorizeSession,
+      deauthorizeSessions,
       fetchQuery.data?.accounts,
       fetchQuery.data?.selectedAccount,
       fetchQuery.isLoading,

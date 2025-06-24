@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useThemeColor } from '@/hooks/useThemeColor'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
-export function ThemedDropdown({
+export function AppDropdown({
   items,
   selectedItem,
   selectItem,

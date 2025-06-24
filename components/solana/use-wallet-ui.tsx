@@ -1,14 +1,14 @@
-import { useMobileWallet } from '@/components/solana/useMobileWallet'
-import { useAuthorization } from '@/components/solana/useAuthorization'
+import { useMobileWallet } from '@/components/solana/use-mobile-wallet'
+import { useAuthorization } from '@/components/solana/use-authorization'
 
 export function useWalletUi() {
-  const { connect, disconnect, signAndSendTransaction, signMessage, signIn } = useMobileWallet()
-  const { selectedAccount } = useAuthorization()
+  const { connect, signAndSendTransaction, signMessage, signIn } = useMobileWallet()
+  const { selectedAccount, deauthorizeSessions } = useAuthorization()
 
   return {
     account: selectedAccount,
     connect,
-    disconnect,
+    disconnect: deauthorizeSessions,
     signAndSendTransaction,
     signIn,
     signMessage,
