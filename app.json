@@ -42,6 +42,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c94f5e96-2411-4010-b470-14068175051d"
+      }
+    },
+    "owner": "beeman"
   }
 }
