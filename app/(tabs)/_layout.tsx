@@ -25,8 +25,9 @@ export default function TabLayout() {
         }),
       }}
     >
+      <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
       <Tabs.Screen
-        name="index"
+        name="account"
         options={{
           title: 'Account',
           tabBarIcon: ({ color }) => <UiIconSymbol size={28} name="wallet.pass.fill" color={color} />,

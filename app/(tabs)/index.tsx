@@ -1,11 +1,6 @@
 import React from 'react'
-import { AccountDetailFeature } from '@/components/account/account-detail-feature'
-import { AppPage } from '@/components/app-page'
+import { Redirect } from 'expo-router'
 
 export default function TabsIndexScreen() {
-  return (
-    <AppPage>
-      <AccountDetailFeature />
-    </AppPage>
-  )
+  return <Redirect href="/(tabs)/account" />
 }

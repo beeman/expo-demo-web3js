@@ -1,0 +1,72 @@
+import { AppView } from '@/components/app-view'
+import { AppText } from '@/components/app-text'
+import { PublicKey } from '@solana/web3.js'
+import { ActivityIndicator, TextInput, View } from 'react-native'
+import React, { useState } from 'react'
+import { useWalletUi } from '../solana/use-wallet-ui'
+import { Button } from '@react-navigation/elements'
+import { useRequestAirdrop } from '@/components/account/use-request-airdrop'
+import { useTransferSol } from '@/components/account/use-transfer-sol'
+
+export function AccountUiModalSend({ address }: { address: PublicKey }) {
+  const { account } = useWalletUi()
+  const requestAirdrop = useRequestAirdrop({ address: account?.publicKey as PublicKey })
+  const transferSol = useTransferSol({ address })
+  const [destinationAddress, setDestinationAddress] = useState('')
+  const [amount, setAmount] = useState('1')
+
+  return (
+    <AppView>
+      <AppText>Send SOL from the connected wallet.</AppText>
+      {requestAirdrop.isPending ? (
+        <ActivityIndicator />
+      ) : (
+        <View style={{ gap: 16 }}>
+          <AppText>Amount (SOL)</AppText>
+          <TextInput
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              color: 'white',
+              borderWidth: 1,
+              borderRadius: 25,
+              paddingHorizontal: 16,
+            }}
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="numeric"
+          />
+          <AppText>Destination Address</AppText>
+          <TextInput
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              color: 'white',
+              borderWidth: 1,
+              borderRadius: 25,
+              paddingHorizontal: 16,
+            }}
+            value={destinationAddress}
+            onChangeText={setDestinationAddress}
+          />
+
+          <Button
+            disabled={transferSol.isPending}
+            onPress={() => {
+              transferSol
+                .mutateAsync({ amount: parseFloat(amount), destination: new PublicKey(destinationAddress) })
+                .then(() => {
+                  console.log(`Sent ${amount} SOL to ${destinationAddress}`)
+                })
+                .catch((err) => console.log(`Error sending SOL: ${err}`, err))
+            }}
+            variant="filled"
+          >
+            Send SOL
+          </Button>
+        </View>
+      )}
+      {transferSol.isError ? (
+        <AppText style={{ color: 'red', fontSize: 12 }}>{`${transferSol.error.message}`}</AppText>
+      ) : null}
+    </AppView>
+  )
+}

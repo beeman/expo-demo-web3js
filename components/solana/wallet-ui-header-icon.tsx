@@ -1,4 +1,3 @@
-// import { Button } from 'expo-router'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import React from 'react'
 import { AppText } from '@/components/app-text'
