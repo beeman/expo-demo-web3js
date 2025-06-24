@@ -15,6 +15,7 @@ type UiIconSymbolName = keyof typeof MAPPING
 const MAPPING = {
   'gearshape.fill': 'settings',
   'wallet.pass.fill': 'wallet',
+  'ladybug.fill': 'bug-report',
 } as UiIconMapping
 
 /**
