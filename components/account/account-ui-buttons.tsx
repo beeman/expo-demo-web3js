@@ -6,9 +6,9 @@ export function AccountUiButtons() {
   const router = useRouter()
   return (
     <View style={{ flexDirection: 'row', gap: 8, justifyContent: 'center' }}>
-      <Button onPressIn={() => router.navigate('/(tabs)/account/modal-airdrop')}>Airdrop</Button>
-      <Button onPressIn={() => router.navigate('/(tabs)/account/modal-send')}>Send</Button>
-      <Button onPressIn={() => router.navigate('/(tabs)/account/modal-receive')}>Receive</Button>
+      <Button onPressIn={() => router.navigate('/(tabs)/account/modal?page=airdrop')}>Airdrop</Button>
+      <Button onPressIn={() => router.navigate('/(tabs)/account/modal?page=send')}>Send</Button>
+      <Button onPressIn={() => router.navigate('/(tabs)/account/modal?page=receive')}>Receive</Button>
     </View>
   )
 }
