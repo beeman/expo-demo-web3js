@@ -15,6 +15,7 @@ import { useCallback, useMemo } from 'react'
 import { useCluster } from '@/components/cluster/cluster-provider'
 import { WalletIcon } from '@wallet-standard/core'
 import { ellipsify } from '@/utils/ellipsify'
+import { useAppConfig } from '@/constants/app-config'
 
 export type Account = Readonly<{
   address: Base64EncodedAddress
@@ -80,11 +81,6 @@ function cacheReviver(key: string, value: any) {
 
 const AUTHORIZATION_STORAGE_KEY = 'authorization-cache'
 
-export const APP_IDENTITY = {
-  name: 'Expo Demo Web3js',
-  uri: 'https://fakedomain.com',
-}
-
 const queryKey = ['wallet-authorization']
 
 function usePersistAuthorization() {
@@ -117,6 +113,7 @@ function useInvalidateAuthorizations() {
 }
 
 export function useAuthorization() {
+  const { name, url } = useAppConfig()
   const { selectedCluster } = useCluster()
   const fetchQuery = useFetchAuthorization()
   const invalidateAuthorizations = useInvalidateAuthorizations()
@@ -137,7 +134,7 @@ export function useAuthorization() {
   const authorizeSession = useCallback(
     async (wallet: AuthorizeAPI) => {
       const authorizationResult = await wallet.authorize({
-        identity: APP_IDENTITY,
+        identity: { name, uri: url },
         chain: selectedCluster.id,
         auth_token: fetchQuery.data?.authToken,
       })
@@ -149,7 +146,7 @@ export function useAuthorization() {
   const authorizeSessionWithSignIn = useCallback(
     async (wallet: AuthorizeAPI, signInPayload: SignInPayload) => {
       const authorizationResult = await wallet.authorize({
-        identity: APP_IDENTITY,
+        identity: { name, uri: url },
         chain: selectedCluster.id,
         auth_token: fetchQuery.data?.authToken,
         sign_in_payload: signInPayload,
