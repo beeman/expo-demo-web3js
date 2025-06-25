@@ -14,7 +14,7 @@ export function AccountUiModalAirdrop({ back }: { back: () => void }) {
 
   return (
     <AppView>
-      <AppText>Request an airdrop of 1 SOL to your connected account.</AppText>
+      <AppText type="subtitle">Request a 1 SOL airdrop to the connected wallet.</AppText>
       {requestAirdrop.isPending ? (
         <ActivityIndicator />
       ) : (

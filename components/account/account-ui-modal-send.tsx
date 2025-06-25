@@ -20,7 +20,7 @@ export function AccountUiModalSend({ address }: { address: PublicKey }) {
 
   return (
     <AppView>
-      <AppText>Send SOL from the connected wallet.</AppText>
+      <AppText type="subtitle">Send SOL from the connected wallet.</AppText>
       {requestAirdrop.isPending ? (
         <ActivityIndicator />
       ) : (
