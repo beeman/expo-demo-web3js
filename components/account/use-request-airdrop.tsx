@@ -1,10 +1,11 @@
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
 import { useConnection } from '@/components/solana/solana-provider'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import { useGetBalanceInvalidate } from './use-get-balance'
 
 export function useRequestAirdrop({ address }: { address: PublicKey }) {
   const connection = useConnection()
-  const client = useQueryClient()
+  const invalidateBalance = useGetBalanceInvalidate({ address })
 
   return useMutation({
     mutationKey: ['airdrop', { endpoint: connection.rpcEndpoint, address }],
@@ -17,15 +18,8 @@ export function useRequestAirdrop({ address }: { address: PublicKey }) {
       await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
       return signature
     },
-    onSuccess: async (signature) => {
-      await Promise.all([
-        client.invalidateQueries({
-          queryKey: ['get-balance', { endpoint: connection.rpcEndpoint, address }],
-        }),
-        client.invalidateQueries({
-          queryKey: ['get-signatures', { endpoint: connection.rpcEndpoint, address }],
-        }),
-      ])
+    onSuccess: async () => {
+      await invalidateBalance()
     },
     retry: false,
   })

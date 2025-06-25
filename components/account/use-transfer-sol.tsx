@@ -1,13 +1,14 @@
 import { PublicKey, TransactionSignature } from '@solana/web3.js'
 import { useConnection } from '@/components/solana/solana-provider'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { createTransaction } from '@/components/account/create-transaction'
+import { useGetBalanceInvalidate } from './use-get-balance'
 
 export function useTransferSol({ address }: { address: PublicKey }) {
   const connection = useConnection()
-  const client = useQueryClient()
   const { signAndSendTransaction } = useWalletUi()
+  const invalidateBalance = useGetBalanceInvalidate({ address })
 
   return useMutation({
     mutationKey: ['transfer-sol', { endpoint: connection.rpcEndpoint, address }],
@@ -37,14 +38,7 @@ export function useTransferSol({ address }: { address: PublicKey }) {
     },
     onSuccess: async (signature) => {
       console.log(signature)
-      await Promise.all([
-        client.invalidateQueries({
-          queryKey: ['get-balance', { endpoint: connection.rpcEndpoint, address }],
-        }),
-        client.invalidateQueries({
-          queryKey: ['get-signatures', { endpoint: connection.rpcEndpoint, address }],
-        }),
-      ])
+      await invalidateBalance()
     },
     onError: (error) => {
       console.error(`Transaction failed! ${error}`)
