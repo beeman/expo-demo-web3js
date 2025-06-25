@@ -1,15 +1,19 @@
 import { AppView } from '@/components/app-view'
 import { AppText } from '@/components/app-text'
 import { PublicKey } from '@solana/web3.js'
+import { AppQrCode } from '@/components/app-qr-code'
+import { Button } from '@react-navigation/elements'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 export function AccountUiModalReceive({ address }: { address: PublicKey }) {
   return (
-    <AppView>
+    <AppView style={{ alignItems: 'center', gap: 16 }}>
       <AppText type="subtitle">Send assets to</AppText>
-      <AppText type="defaultSemiBold">{address.toString()}</AppText>
-      <AppText type="link" style={{ textAlign: 'center' }}>
-        TODO: Add QR code
+      <AppText type="defaultSemiBold" style={{ textAlign: 'center' }}>
+        {address.toString()}
       </AppText>
+      <AppQrCode value={address.toString()} />
+      <Button onPressIn={() => Clipboard.setString(address.toString())}>Copy Address</Button>
     </AppView>
   )
 }
