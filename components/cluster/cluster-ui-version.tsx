@@ -1,8 +1,8 @@
 import React from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Cluster } from './cluster-provider'
 import { useConnection } from '../solana/solana-provider'
 import { AppText } from '@/components/app-text'
+import { Cluster } from '@/components/cluster/cluster'
 
 export function ClusterUiVersion({ selectedCluster }: { selectedCluster: Cluster }) {
   const connection = useConnection()

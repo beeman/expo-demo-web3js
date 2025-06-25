@@ -1,21 +1,7 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
-import { IdentifierString } from '@wallet-standard/base'
 import { useAppConfig } from '@/constants/app-config'
-
-export interface Cluster {
-  id: IdentifierString
-  name: string
-  endpoint: string
-  network: ClusterNetwork
-  active?: boolean
-}
-
-export enum ClusterNetwork {
-  Mainnet = 'mainnet-beta',
-  Testnet = 'testnet',
-  Devnet = 'devnet',
-  Custom = 'custom',
-}
+import { Cluster } from '@/components/cluster/cluster'
+import { ClusterNetwork } from '@/components/cluster/cluster-network'
 
 export interface ClusterProviderContext {
   selectedCluster: Cluster
