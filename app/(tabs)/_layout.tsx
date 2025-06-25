@@ -1,11 +1,10 @@
 import { Tabs } from 'expo-router'
 import React from 'react'
-import { Platform } from 'react-native'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import UiTabBarBackground from '@/components/ui/ui-tab-bar-background'
 import { Colors } from '@/constants/colors'
 import { useColorScheme } from '@/hooks/use-color-scheme'
-import { WalletUiHeaderIcon } from '@/components/solana/wallet-ui-header-icon'
+import { WalletUiDropdown } from '@/components/solana/wallet-ui-dropdown'
+import { View } from 'react-native'
 
 export default function TabLayout() {
   const colorScheme = useColorScheme()
@@ -14,17 +13,14 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerRight: () => <WalletUiHeaderIcon />,
-        tabBarBackground: UiTabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        headerRight: () => (
+          <View style={{ paddingRight: 16 }}>
+            <WalletUiDropdown />
+          </View>
+        ),
       }}
     >
+      {/* The index redirects to the account screen */}
       <Tabs.Screen name="index" options={{ tabBarItemStyle: { display: 'none' } }} />
       <Tabs.Screen
         name="account"

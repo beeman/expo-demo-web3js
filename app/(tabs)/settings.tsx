@@ -14,7 +14,7 @@ export default function TabSettingsScreen() {
       <AppText type="default" style={{ opacity: 0.5, fontSize: 14 }}>
         Configure app info and clusters in{' '}
         <AppText type="defaultSemiBold" style={{ fontSize: 14 }}>
-          app/app-config.tsx
+          constants/app-config.tsx
         </AppText>
         .
       </AppText>

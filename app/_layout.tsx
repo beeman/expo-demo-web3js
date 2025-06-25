@@ -1,26 +1,24 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { useFonts } from 'expo-font'
-import { Stack, useGlobalSearchParams, usePathname } from 'expo-router'
+import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import 'react-native-reanimated'
 
 import { useColorScheme } from '@/hooks/use-color-scheme'
 import { AppProviders } from '@/components/app-providers'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import * as SplashScreen from 'expo-splash-screen'
 import { View } from 'react-native'
+import { useTrackLocations } from '@/hooks/use-track-locations'
 
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const pathname = usePathname()
-  const params = useGlobalSearchParams()
-
-  // Track the location in your analytics provider here.
-  useEffect(() => {
+  // Use this hook to track the locations for analytics or debugging.
+  // Delete if you don't need it.
+  useTrackLocations((pathname, params) => {
     console.log(`Track ${pathname}`, { params })
-  }, [pathname, params])
-
+  })
   const colorScheme = useColorScheme()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),

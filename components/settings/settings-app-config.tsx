@@ -1,4 +1,4 @@
-import { useAppConfig } from '@/app/app-config'
+import { useAppConfig } from '@/constants/app-config'
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
 import { AppExternalLink, AppExternalLinkProps } from '@/components/app-external-link'

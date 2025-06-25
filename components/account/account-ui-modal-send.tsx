@@ -7,6 +7,7 @@ import { useWalletUi } from '../solana/use-wallet-ui'
 import { Button } from '@react-navigation/elements'
 import { useRequestAirdrop } from '@/components/account/use-request-airdrop'
 import { useTransferSol } from '@/components/account/use-transfer-sol'
+import { useThemeColor } from '@/hooks/use-theme-color'
 
 export function AccountUiModalSend({ address }: { address: PublicKey }) {
   const { account } = useWalletUi()
@@ -14,6 +15,8 @@ export function AccountUiModalSend({ address }: { address: PublicKey }) {
   const transferSol = useTransferSol({ address })
   const [destinationAddress, setDestinationAddress] = useState('')
   const [amount, setAmount] = useState('1')
+  const backgroundColor = useThemeColor({ light: '#f0f0f0', dark: '#333333' }, 'background')
+  const textColor = useThemeColor({ light: '#000000', dark: '#ffffff' }, 'text')
 
   return (
     <AppView>
@@ -25,8 +28,8 @@ export function AccountUiModalSend({ address }: { address: PublicKey }) {
           <AppText>Amount (SOL)</AppText>
           <TextInput
             style={{
-              backgroundColor: 'rgba(255,255,255,0.1)',
-              color: 'white',
+              backgroundColor,
+              color: textColor,
               borderWidth: 1,
               borderRadius: 25,
               paddingHorizontal: 16,
@@ -38,8 +41,8 @@ export function AccountUiModalSend({ address }: { address: PublicKey }) {
           <AppText>Destination Address</AppText>
           <TextInput
             style={{
-              backgroundColor: 'rgba(255,255,255,0.1)',
-              color: 'white',
+              backgroundColor,
+              color: textColor,
               borderWidth: 1,
               borderRadius: 25,
               paddingHorizontal: 16,

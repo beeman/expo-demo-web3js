@@ -45,8 +45,9 @@ export function AppDropdown({
 
 const styles = StyleSheet.create({
   container: {
-    width: 200,
+    width: 'auto',
     borderRadius: 5,
+    position: 'relative',
   },
   header: {
     padding: 10,
@@ -55,7 +56,10 @@ const styles = StyleSheet.create({
   list: {
     borderWidth: 1,
     borderRadius: 5,
-    marginTop: 2,
+    marginTop: 38,
+    width: 'auto',
+    position: 'absolute',
+    zIndex: 10,
   },
   item: {
     padding: 10,

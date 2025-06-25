@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 import { IdentifierString } from '@wallet-standard/base'
-import { useAppConfig } from '@/app/app-config'
+import { useAppConfig } from '@/constants/app-config'
 
 export interface Cluster {
   id: IdentifierString
