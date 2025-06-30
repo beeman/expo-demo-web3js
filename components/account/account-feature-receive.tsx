@@ -5,7 +5,7 @@ import { AppQrCode } from '@/components/app-qr-code'
 import { Button } from '@react-navigation/elements'
 import Clipboard from '@react-native-clipboard/clipboard'
 
-export function AccountUiModalReceive({ address }: { address: PublicKey }) {
+export function AccountFeatureReceive({ address }: { address: PublicKey }) {
   return (
     <AppView style={{ gap: 16 }}>
       <AppText type="subtitle">Send assets to this address:</AppText>

@@ -9,7 +9,7 @@ import { useRequestAirdrop } from '@/components/account/use-request-airdrop'
 import { useTransferSol } from '@/components/account/use-transfer-sol'
 import { useThemeColor } from '@/hooks/use-theme-color'
 
-export function AccountUiModalSend({ address }: { address: PublicKey }) {
+export function AccountFeatureSend({ address }: { address: PublicKey }) {
   const { account } = useWalletUi()
   const requestAirdrop = useRequestAirdrop({ address: account?.publicKey as PublicKey })
   const transferSol = useTransferSol({ address })

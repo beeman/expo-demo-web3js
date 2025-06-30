@@ -7,7 +7,7 @@ import React from 'react'
 import { ActivityIndicator } from 'react-native'
 import { useRequestAirdrop } from '@/components/account/use-request-airdrop'
 
-export function AccountUiModalAirdrop({ back }: { back: () => void }) {
+export function AccountFeatureAirdrop({ back }: { back: () => void }) {
   const { account } = useWalletUi()
   const amount = 1
   const requestAirdrop = useRequestAirdrop({ address: account?.publicKey as PublicKey })
