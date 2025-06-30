@@ -3,15 +3,11 @@ import { AppText } from '@/components/app-text'
 import { PublicKey } from '@solana/web3.js'
 import { ActivityIndicator, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
-import { useWalletUi } from '../solana/use-wallet-ui'
 import { Button } from '@react-navigation/elements'
-import { useRequestAirdrop } from '@/components/account/use-request-airdrop'
 import { useTransferSol } from '@/components/account/use-transfer-sol'
 import { useThemeColor } from '@/hooks/use-theme-color'
 
 export function AccountFeatureSend({ address }: { address: PublicKey }) {
-  const { account } = useWalletUi()
-  const requestAirdrop = useRequestAirdrop({ address: account?.publicKey as PublicKey })
   const transferSol = useTransferSol({ address })
   const [destinationAddress, setDestinationAddress] = useState('')
   const [amount, setAmount] = useState('1')
@@ -21,7 +17,7 @@ export function AccountFeatureSend({ address }: { address: PublicKey }) {
   return (
     <AppView>
       <AppText type="subtitle">Send SOL from the connected wallet.</AppText>
-      {requestAirdrop.isPending ? (
+      {transferSol.isPending ? (
         <ActivityIndicator />
       ) : (
         <View style={{ gap: 16 }}>

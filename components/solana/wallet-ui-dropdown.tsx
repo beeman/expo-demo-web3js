@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Linking, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { useThemeColor } from '@/hooks/use-theme-color'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { ellipsify } from '@/utils/ellipsify'
-import { UiIconSymbol, UiIconSymbolName } from '@/components/ui/ui-icon-symbol'
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useCluster } from '@/components/cluster/cluster-provider'
+import { AppText } from '@/components/app-text'
 
 export function useWalletUiTheme() {
   const backgroundColor = useThemeColor({}, 'background')
@@ -20,24 +21,24 @@ export function useWalletUiTheme() {
   }
 }
 
-function BaseButton({ icon, label, onPress }: { icon?: UiIconSymbolName; label: string; onPress: () => void }) {
+function BaseButton({ label, onPress }: { label: string; onPress: () => void }) {
   const { backgroundColor, borderColor, textColor } = useWalletUiTheme()
   return (
     <TouchableOpacity
-      style={[styles.header, { backgroundColor, borderColor, flexDirection: 'row', alignItems: 'center', gap: 8 }]}
+      style={[styles.button, { backgroundColor, borderColor, flexDirection: 'row', alignItems: 'center', gap: 8 }]}
       onPress={onPress}
     >
-      {icon ? <UiIconSymbol name={icon} color={textColor} /> : null}
-      <Text style={{ color: textColor }}>{label}</Text>
+      <UiIconSymbol name="wallet.pass.fill" color={textColor} />
+      <AppText>{label}</AppText>
     </TouchableOpacity>
   )
 }
 
 function ListItem({ label, onPress }: { label: string; onPress: () => void }) {
-  const { borderColor, textColor } = useWalletUiTheme()
+  const { borderColor } = useWalletUiTheme()
   return (
     <TouchableOpacity style={[styles.item, { borderBottomColor: borderColor }]} onPress={onPress}>
-      <Text style={{ color: textColor }}>{label}</Text>
+      <AppText>{label}</AppText>
     </TouchableOpacity>
   )
 }
@@ -45,13 +46,13 @@ function ListItem({ label, onPress }: { label: string; onPress: () => void }) {
 export function WalletUiConnectButton({ label = 'Connect', then }: { label?: string; then?: () => void }) {
   const { connect } = useWalletUi()
 
-  return <BaseButton icon="wallet.pass.fill" label={label} onPress={() => connect().then(() => then?.())} />
+  return <BaseButton label={label} onPress={() => connect().then(() => then?.())} />
 }
 
 export function WalletUiDisconnectButton({ label = 'Disconnect', then }: { label?: string; then?: () => void }) {
   const { disconnect } = useWalletUi()
 
-  return <BaseButton icon="wallet.pass.fill" label={label} onPress={() => disconnect().then(() => then?.())} />
+  return <BaseButton label={label} onPress={() => disconnect().then(() => then?.())} />
 }
 
 export function WalletUiDropdown() {
@@ -66,11 +67,7 @@ export function WalletUiDropdown() {
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
-      <BaseButton
-        icon="wallet.pass.fill"
-        label={ellipsify(account.publicKey.toString())}
-        onPress={() => setIsOpen(!isOpen)}
-      />
+      <BaseButton label={ellipsify(account.publicKey.toString())} onPress={() => setIsOpen(!isOpen)} />
       {isOpen && (
         <View style={[styles.list, { backgroundColor: listBackgroundColor, borderColor }]}>
           <ListItem
@@ -102,11 +99,10 @@ export function WalletUiDropdown() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 'auto',
-    borderRadius: 50,
     position: 'relative',
+    backgroundColor: 'inherit',
   },
-  header: {
+  button: {
     borderWidth: 1,
     paddingHorizontal: 16,
     paddingVertical: 8,
