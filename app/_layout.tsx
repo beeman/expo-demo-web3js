@@ -1,3 +1,4 @@
+import { PortalHost } from '@rn-primitives/portal'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -47,6 +48,7 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="auto" />
       </AppProviders>
+      <PortalHost />
     </View>
   )
 }

@@ -6,12 +6,12 @@ import { AppPage } from '@/components/app-page'
 import { AccountUiButtons } from './account-ui-buttons'
 import { AccountUiBalance } from '@/components/account/account-ui-balance'
 import { AccountUiTokenAccounts } from '@/components/account/account-ui-token-accounts'
-import { WalletUiConnectButton } from '@/components/solana/wallet-ui-dropdown'
 import { RefreshControl, ScrollView } from 'react-native'
 import { useCallback, useState } from 'react'
 import { useGetBalanceInvalidate } from '@/components/account/use-get-balance'
 import { PublicKey } from '@solana/web3.js'
 import { useGetTokenAccountsInvalidate } from '@/components/account/use-get-token-accounts'
+import { WalletUiButtonConnect } from '@/components/solana/wallet-ui-button-connect'
 
 export function AccountFeature() {
   const { account } = useWalletUi()
@@ -45,7 +45,7 @@ export function AccountFeature() {
       ) : (
         <AppView style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
           <AppText>Connect your wallet.</AppText>
-          <WalletUiConnectButton />
+          <WalletUiButtonConnect />
         </AppView>
       )}
     </AppPage>

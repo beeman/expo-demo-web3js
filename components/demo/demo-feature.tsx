@@ -4,6 +4,7 @@ import { DemoFeatureSignMessage } from './demo-feature-sign-message'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { PublicKey } from '@solana/web3.js'
 import { WalletUiDropdown } from '@/components/solana/wallet-ui-dropdown'
+import * as React from 'react'
 
 export function DemoFeature() {
   const { account } = useWalletUi()

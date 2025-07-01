@@ -2,7 +2,8 @@ import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { ellipsify } from '@/utils/ellipsify'
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
-import { WalletUiConnectButton, WalletUiDisconnectButton } from '@/components/solana/wallet-ui-dropdown'
+import { WalletUiButtonConnect } from '@/components/solana/wallet-ui-button-connect'
+import { WalletUiButtonDisconnect } from '@/components/solana/wallet-ui-button-disconnect'
 
 export function SettingsUiAccount() {
   const { account } = useWalletUi()
@@ -12,12 +13,12 @@ export function SettingsUiAccount() {
       {account ? (
         <AppView style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
           <AppText>Connected to {ellipsify(account.publicKey.toString(), 8)}</AppText>
-          <WalletUiDisconnectButton />
+          <WalletUiButtonDisconnect />
         </AppView>
       ) : (
         <AppView style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
           <AppText>Connect your wallet.</AppText>
-          <WalletUiConnectButton />
+          <WalletUiButtonConnect />
         </AppView>
       )}
     </AppView>
