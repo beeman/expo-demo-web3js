@@ -3,6 +3,7 @@ import { PropsWithChildren } from 'react'
 import { ClusterProvider } from './cluster/cluster-provider'
 import { SolanaProvider } from '@/components/solana/solana-provider'
 import { AppTheme } from '@/components/app-theme'
+import { AuthProvider } from '@/components/auth/auth-provider'
 
 const queryClient = new QueryClient()
 
@@ -11,7 +12,9 @@ export function AppProviders({ children }: PropsWithChildren) {
     <AppTheme>
       <QueryClientProvider client={queryClient}>
         <ClusterProvider>
-          <SolanaProvider>{children}</SolanaProvider>
+          <SolanaProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </SolanaProvider>
         </ClusterProvider>
       </QueryClientProvider>
     </AppTheme>

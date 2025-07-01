@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { Linking, StyleSheet } from 'react-native'
 import Clipboard from '@react-native-clipboard/clipboard'
-import { useThemeColor } from '@/hooks/use-theme-color'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { ellipsify } from '@/utils/ellipsify'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
@@ -9,19 +8,7 @@ import { useCluster } from '@/components/cluster/cluster-provider'
 import { AppText } from '@/components/app-text'
 import * as Dropdown from '@rn-primitives/dropdown-menu'
 import { WalletUiButtonConnect } from './wallet-ui-button-connect'
-
-export function useWalletUiTheme() {
-  const backgroundColor = useThemeColor({}, 'background')
-  const listBackgroundColor = useThemeColor({}, 'background')
-  const borderColor = useThemeColor({}, 'border')
-  const textColor = useThemeColor({}, 'text')
-  return {
-    backgroundColor,
-    listBackgroundColor,
-    borderColor,
-    textColor,
-  }
-}
+import { useWalletUiTheme } from '@/components/solana/use-wallet-ui-theme'
 
 function useDropdownItems() {
   const { getExplorerUrl } = useCluster()
