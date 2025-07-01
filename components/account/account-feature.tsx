@@ -1,7 +1,6 @@
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { AppText } from '@/components/app-text'
 import { ellipsify } from '@/utils/ellipsify'
-import { WalletUiButtonConnect } from '@/components/solana/wallet-ui-button-connect'
 import { AppView } from '@/components/app-view'
 import { AppPage } from '@/components/app-page'
 import { AccountUiButtons } from './account-ui-buttons'
@@ -47,7 +46,6 @@ export function AccountFeature() {
         <AppView style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
           <AppText>Connect your wallet.</AppText>
           <WalletUiConnectButton />
-          <WalletUiButtonConnect />
         </AppView>
       )}
     </AppPage>
