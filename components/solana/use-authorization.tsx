@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { PublicKey, PublicKeyInitData } from '@solana/web3.js'
 import {
   Account as AuthorizedAccount,
+  AppIdentity,
   AuthorizationResult,
   AuthorizeAPI,
   AuthToken,
@@ -15,7 +16,9 @@ import { useCallback, useMemo } from 'react'
 import { useCluster } from '@/components/cluster/cluster-provider'
 import { WalletIcon } from '@wallet-standard/core'
 import { ellipsify } from '@/utils/ellipsify'
-import { useAppConfig } from '@/constants/app-config'
+import { AppConfig } from '@/constants/app-config'
+
+const identity: AppIdentity = { name: AppConfig.name, uri: AppConfig.uri }
 
 export type Account = Readonly<{
   address: Base64EncodedAddress
@@ -113,7 +116,6 @@ function useInvalidateAuthorizations() {
 }
 
 export function useAuthorization() {
-  const { name, url } = useAppConfig()
   const { selectedCluster } = useCluster()
   const fetchQuery = useFetchAuthorization()
   const invalidateAuthorizations = useInvalidateAuthorizations()
@@ -134,7 +136,7 @@ export function useAuthorization() {
   const authorizeSession = useCallback(
     async (wallet: AuthorizeAPI) => {
       const authorizationResult = await wallet.authorize({
-        identity: { name, uri: url },
+        identity,
         chain: selectedCluster.id,
         auth_token: fetchQuery.data?.authToken,
       })
@@ -146,7 +148,7 @@ export function useAuthorization() {
   const authorizeSessionWithSignIn = useCallback(
     async (wallet: AuthorizeAPI, signInPayload: SignInPayload) => {
       const authorizationResult = await wallet.authorize({
-        identity: { name, uri: url },
+        identity,
         chain: selectedCluster.id,
         auth_token: fetchQuery.data?.authToken,
         sign_in_payload: signInPayload,

@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren, use, useMemo } from 'react'
 import { useMobileWallet } from '@/components/solana/use-mobile-wallet'
-import { useAppConfig } from '@/constants/app-config'
+import { AppConfig } from '@/constants/app-config'
 import { Account, useAuthorization } from '@/components/solana/use-authorization'
 import { useMutation } from '@tanstack/react-query'
 
@@ -24,10 +24,12 @@ export function useAuth() {
 
 function useSignInMutation() {
   const { signIn } = useMobileWallet()
-  const { url } = useAppConfig()
 
   return useMutation({
-    mutationFn: async () => await signIn({ uri: url }),
+    mutationFn: async () =>
+      await signIn({
+        uri: AppConfig.uri,
+      }),
   })
 }
 

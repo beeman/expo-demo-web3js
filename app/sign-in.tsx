@@ -2,7 +2,7 @@ import { router } from 'expo-router'
 import { useAuth } from '@/components/auth/auth-provider'
 import { AppText } from '@/components/app-text'
 import { AppView } from '@/components/app-view'
-import { useAppConfig } from '@/constants/app-config'
+import { AppConfig } from '@/constants/app-config'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ActivityIndicator, View } from 'react-native'
 import { Image } from 'expo-image'
@@ -10,7 +10,6 @@ import { Button } from '@react-navigation/elements'
 
 export default function SignIn() {
   const { signIn, isLoading } = useAuth()
-  const { name } = useAppConfig()
   return (
     <AppView
       style={{
@@ -31,7 +30,7 @@ export default function SignIn() {
           {/* Dummy view to push the next view to the center. */}
           <View />
           <View style={{ alignItems: 'center', gap: 16 }}>
-            <AppText type="title">{name}</AppText>
+            <AppText type="title">{AppConfig.name}</AppText>
             <Image source={require('../assets/images/icon.png')} style={{ width: 128, height: 128 }} />
           </View>
           <View style={{ marginBottom: 16 }}>

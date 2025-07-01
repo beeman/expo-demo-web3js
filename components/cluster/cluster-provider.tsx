@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
-import { useAppConfig } from '@/constants/app-config'
+import { AppConfig } from '@/constants/app-config'
 import { Cluster } from '@/components/cluster/cluster'
 import { ClusterNetwork } from '@/components/cluster/cluster-network'
 
@@ -14,16 +14,15 @@ export interface ClusterProviderContext {
 const Context = createContext<ClusterProviderContext>({} as ClusterProviderContext)
 
 export function ClusterProvider({ children }: { children: ReactNode }) {
-  const { clusters } = useAppConfig()
-  const [selectedCluster, setSelectedCluster] = useState<Cluster>(clusters[0])
+  const [selectedCluster, setSelectedCluster] = useState<Cluster>(AppConfig.clusters[0])
   const value: ClusterProviderContext = useMemo(
     () => ({
       selectedCluster,
-      clusters: [...clusters].sort((a, b) => (a.name > b.name ? 1 : -1)),
+      clusters: [...AppConfig.clusters].sort((a, b) => (a.name > b.name ? 1 : -1)),
       setSelectedCluster: (cluster: Cluster) => setSelectedCluster(cluster),
       getExplorerUrl: (path: string) => `https://explorer.solana.com/${path}${getClusterUrlParam(selectedCluster)}`,
     }),
-    [selectedCluster, setSelectedCluster, clusters],
+    [selectedCluster, setSelectedCluster],
   )
   return <Context.Provider value={value}>{children}</Context.Provider>
 }
