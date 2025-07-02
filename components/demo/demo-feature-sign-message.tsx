@@ -1,12 +1,14 @@
 import { AppView } from '@/components/app-view'
 import { AppText } from '@/components/app-text'
 import { PublicKey } from '@solana/web3.js'
+import Snackbar from 'react-native-snackbar'
 import { ActivityIndicator, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { Button } from '@react-navigation/elements'
 import { useThemeColor } from '@/hooks/use-theme-color'
 import { useMutation } from '@tanstack/react-query'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
+import { ellipsify } from '@/utils/ellipsify'
 
 function useSignMessage({ address }: { address: PublicKey }) {
   const { signMessage } = useWalletUi()
@@ -26,23 +28,23 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
   return (
     <AppView>
       <AppText type="subtitle">Sign message with connected wallet.</AppText>
-      {signMessage.isPending ? (
-        <ActivityIndicator />
-      ) : (
-        <View style={{ gap: 16 }}>
-          <AppText>Message</AppText>
-          <TextInput
-            style={{
-              backgroundColor,
-              color: textColor,
-              borderWidth: 1,
-              borderRadius: 25,
-              paddingHorizontal: 16,
-            }}
-            value={message}
-            onChangeText={setMessage}
-          />
 
+      <View style={{ gap: 16 }}>
+        <AppText>Message</AppText>
+        <TextInput
+          style={{
+            backgroundColor,
+            color: textColor,
+            borderWidth: 1,
+            borderRadius: 25,
+            paddingHorizontal: 16,
+          }}
+          value={message}
+          onChangeText={setMessage}
+        />
+        {signMessage.isPending ? (
+          <ActivityIndicator />
+        ) : (
           <Button
             disabled={signMessage.isPending || message?.trim() === ''}
             onPress={() => {
@@ -50,6 +52,10 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
                 .mutateAsync({ message })
                 .then(() => {
                   console.log(`Signed message: ${message} with ${address.toString()}`)
+                  Snackbar.show({
+                    text: `Signed message with ${ellipsify(address.toString(), 8)}`,
+                    duration: Snackbar.LENGTH_SHORT,
+                  })
                 })
                 .catch((err) => console.log(`Error signing message: ${err}`, err))
             }}
@@ -57,8 +63,8 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
           >
             Sign Message
           </Button>
-        </View>
-      )}
+        )}
+      </View>
       {signMessage.isError ? (
         <AppText style={{ color: 'red', fontSize: 12 }}>{`${signMessage.error.message}`}</AppText>
       ) : null}
